@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}My shop{% endblock %}</title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+    <a href="/" class="logo">Betonit</a>
+    <form class="form-inline my-2 my-lg-0" action="{% url 'shop:product_list' %}">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <button class="btn btn-outline my-2 my-sm-0" type="submit">Поиск</button>
+    </form>
+</div>
+<div id="subheader">
+    <div class="cart">
+    {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+            В корзине:
+            <a href="{% url 'cart:cart_detail' %}">
+                {{ total_items }} шт.,
+                {{ cart.get_total_price }} руб.
+            </a>
+        {% else %}
+            Ваша корзина пуста.
+        {% endif %}
+    {% endwith %}
+</div>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

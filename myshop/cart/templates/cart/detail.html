@@ -1,0 +1,59 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+    Your shopping cart
+{% endblock %}
+{% block content %}
+    <h1>Ваша корзина</h1>
+    <table class="cart">
+        <thead>
+        <tr>
+            <th>Изображение</th>
+            <th>Продукт</th>
+            <th>Колличество</th>
+            <th>Цена за еденицу товара</th>
+            <th>Цена за колличество</th>
+            <th>Удалить</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td>
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="
+                                {% if product.image %}
+                                    {{ product.image.url }}
+                                {% else %}
+                                    {% static 'img/no_image.png' %}
+                                {% endif %}">
+                        </a>
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td>
+                        <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.update }}
+                            {% csrf_token %}
+                            <input type="submit" value="Обновить">
+                        </form>
+                    </td>
+                    <td class="num">{{ item.price }} руб.</td>
+                    <td class="num">{{ item.total_price }} руб.</td>
+                    <td><a href="{% url 'cart:cart_remove' product.id%}">Удалить</a></td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Итого</td>
+            <td colspan="4"></td>
+            <td class="num">{{ cart.get_total_price }} руб.</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="{% url 'shop:product_list' %}" class="button light">Вернуться к покупкам</a>
+        <a href="{% url 'orders:order_create' %}" class="button">Оформить заказ</a>
+    </p>
+{% endblock %}

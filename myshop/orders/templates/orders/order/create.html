@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+    <h1>Проверка данных</h1>
+    <div class="order-info">
+        <h3>Ваш заказ</h3>
+        <ul>
+            {% for item in cart %}
+                <li>
+                    {{ item.quantity }}x {{ item.product.name }}
+                    <span>{{ item.total_price }} руб.</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <p>Итого: {{ cart.get_total_price }} руб.</p>
+    </div>
+    <form action="." method="post" class="order-form">
+        {{ form.as_p }}
+        <p><input type="submit" value="Подтвердить заказ"></p>
+        {% csrf_token %}
+    </form>
+{% endblock %}
