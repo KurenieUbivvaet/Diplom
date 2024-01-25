@@ -21,7 +21,7 @@
         <h1>{% if category %}{{ category.name }}{% else %}Товары{% endif %}</h1>
 
 
-        {% for product in products %}
+        {% for product in page_obj  %}
             <div class="item">
                 <a href="{{ product.get_absolute_url }}">
                     <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
@@ -30,5 +30,18 @@
                 {{ product.price }} руб.
             </div>
         {% endfor %}
+
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+            {% endif %}
+
+            <span class="current-page">{{ page_obj.number }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            {% endif %}
+        </div>
+
     </div>
 {% endblock %}
