@@ -24,24 +24,30 @@
         {% for product in page_obj  %}
             <div class="item">
                 <a href="{{ product.get_absolute_url }}">
-                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
                 </a>
                 <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
                 {{ product.price }} руб.
             </div>
         {% endfor %}
-
-        <div class="pagination">
+    </div>
+    <div class="pagination">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                <a href="?page=1">&#60;&#60;</a>
+                <a href="?page={{ page_obj.previous_page_number }}">&#60;</a>
             {% endif %}
 
-            <span class="current-page">{{ page_obj.number }}</span>
+            {% for page_number in page_obj.paginator.get_elided_page_range %}
+                {% if page_number == page_obj.number %}
+                    <span class="current-page">{{ page_number }}</span>
+                {% else %}
+                    <a href="?page={{ page_number }}">{{ page_number }}</a>
+                {% endif %}
+            {% endfor %}
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                <a href="?page={{ page_obj.next_page_number }}">&#62;</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">&#62;&#62;</a>
             {% endif %}
-        </div>
-
     </div>
 {% endblock %}
