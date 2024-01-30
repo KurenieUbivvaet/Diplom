@@ -5,6 +5,7 @@
     <meta charset="utf-8"/>
     <title>{% block title %}My shop{% endblock %}</title>
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 </head>
 <body>
 <div id="header">
@@ -33,5 +34,24 @@
     {% block content %}
     {% endblock %}
 </div>
+<div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&#60;&#60;</a>
+                <a href="?page={{ page_obj.previous_page_number }}">&#60;</a>
+            {% endif %}
+
+            {% for page_number in page_obj.paginator.get_elided_page_range %}
+                {% if page_number == page_obj.number %}
+                    <span class="current-page">{{ page_number }}</span>
+                {% else %}
+                    <a href="?page={{ page_number }}">{{ page_number }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">&#62;</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">&#62;&#62;</a>
+            {% endif %}
+        </div>
 </body>
 </html>
