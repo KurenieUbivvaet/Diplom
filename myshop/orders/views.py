@@ -1,8 +1,11 @@
+import datetime
+
 from django.shortcuts import render
 from .models import OrderItem
 from .forms import OrderCreateForm
 from cart.cart import Cart
-from .tasks import order_created
+
+from django.core.mail import send_mail
 
 
 def order_create(request):
@@ -18,8 +21,28 @@ def order_create(request):
                                          quantity=item['quantity'])
             # очистка корзины
             cart.clear()
-            # запуск асинхронной задачи
-            #order_created.delay(order.id)
+
+            # Получите адрес электронной почты из формы
+            email = form.cleaned_data['email']
+
+            # Определите переменные для отправителя, получателя, темы и текста письма
+            subject = f'Заказ № {order.id}'
+
+            product_list = ''
+            num = 0
+            for item in cart:
+                num += 1
+                product_list += f'Товар {num}: {item["product"]}\n Цена: {item["price"]} руб., Количество: {item["quantity"]} шт.\n'
+            product_list += f"Сумма: {cart.get_total_price()} руб."
+            message = f'Здравствуйте, {order.name}\n' \
+                f'Ваш заказ № {order.id}\n' \
+                f'Список товаров:\n{product_list}'
+            from_email = 'smdmisha@yandex.ru'
+            to_email = email
+
+            # Отправка письма
+            send_mail(subject, message, from_email, [to_email])
+
             return render(request, 'orders/order/created.html',
                           {'order': order})
     else:
