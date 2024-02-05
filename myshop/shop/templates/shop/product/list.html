@@ -1,5 +1,26 @@
 {% extends "shop/base.html" %}
 {% load static %}
+{% block subheader %}
+<div id="subheader_block">
+    <form class="form-inline my-2 my-lg-0" action="{% url 'shop:product_list' %}">
+        <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search" name="search">
+        <button class="btn btn-outline my-2 my-sm-0" type="submit">Поиск</button>
+    </form>
+    <div class="cart">
+    {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+            В корзине:
+            <a href="{% url 'cart:cart_detail' %}">
+                {{ total_items }} шт.,
+                {{ cart.get_total_price }} руб.
+            </a>
+        {% else %}
+            Ваша корзина пуста.
+        {% endif %}
+    {% endwith %}
+    </div>
+</div>
+{% endblock %}
 {% block title %}
     {% if category %}{{ category.name }}{% else %}Products{% endif %}
 {% endblock %}
