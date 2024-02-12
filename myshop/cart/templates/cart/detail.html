@@ -45,13 +45,40 @@
                 </tr>
             {% endwith %}
         {% endfor %}
-        <tr class="total">
-            <td>Итого</td>
+
+
+        {% if cart.coupon %}
+        <tr class="subtotal">
+            <td>Промежуточный итог:</td>
             <td colspan="4"></td>
             <td class="num">{{ cart.get_total_price }} руб.</td>
         </tr>
+        <tr>
+            <td>
+                "{{ cart.coupon.code }}" Промокод
+                ({{ cart.coupon.discount }}% off)
+            </td>
+            <td colspan="4"></td>
+            <td class="num neg">
+                - {{ cart.get_discount|floatformat:"2" }} руб.
+            </td>
+        </tr>
+        {% endif %}
+        <tr class="total">
+            <td>Итого</td>
+            <td colspan="4"></td>
+            <td class="num">
+                {{ cart.get_total_price_after_discount|floatformat:"2" }} руб.
+            </td>
+        </tr>
+
         </tbody>
     </table>
+    <form action="{% url 'coupons:apply' %}" method="post">
+        {{ coupon_apply_form }}
+        <input type="submit" value="Применить">
+        {% csrf_token %}
+    </form>
     <p class="text-right">
         <a href="{% url 'shop:product_list' %}" class="button light">Вернуться к покупкам</a>
         <a href="{% url 'orders:order_create' %}" class="button">Оформить заказ</a>

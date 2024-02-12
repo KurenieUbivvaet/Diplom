@@ -5,7 +5,13 @@ from .models import OrderItem
 from .forms import OrderCreateForm
 from cart.cart import Cart
 
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.conf import settings
+
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import get_object_or_404
+from .models import Order
 
 
 def order_create(request):
@@ -13,7 +19,11 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
-            order = form.save()
+            order = form.save(commit=False)
+            if cart.coupon:
+                order.coupon = cart.coupon
+                order.discount = cart.coupon.discount
+            order.save()
             for item in cart:
                 OrderItem.objects.create(order=order,
                                          product=item['product'],
@@ -22,26 +32,12 @@ def order_create(request):
             # очистка корзины
             cart.clear()
 
-            # Получите адрес электронной почты из формы
-            email = form.cleaned_data['email']
-
             # Определите переменные для отправителя, получателя, темы и текста письма
             subject = f'Заказ № {order.id}'
-
-            product_list = ''
-            num = 0
-            for item in cart:
-                num += 1
-                product_list += f'Товар {num}: {item["product"]}\n Цена: {item["price"]} руб., Количество: {item["quantity"]} шт.\n'
-            product_list += f"Сумма: {cart.get_total_price()} руб."
-            message = f'Здравствуйте, {order.name}\n' \
-                f'Ваш заказ № {order.id}\n' \
-                f'Список товаров:\n{product_list}'
-            from_email = 'smdmisha@yandex.ru'
-            to_email = email
-
-            # Отправка письма
-            send_mail(subject, message, from_email, [to_email])
+            message = render_to_string('orders/order/email_template.html', {'order_id': order.id, 'cart': cart, 'name': order.name})
+            from_email = settings.EMAIL_HOST_USER
+            to_email = order.email
+            send_mail(subject, message, from_email, [to_email], html_message=message)
 
             return render(request, 'orders/order/created.html',
                           {'order': order})
@@ -49,3 +45,10 @@ def order_create(request):
         form = OrderCreateForm
     return render(request, 'orders/order/create.html',
                   {'cart': cart, 'form': form})
+
+@staff_member_required
+def admin_order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request,
+                  'admin/orders/order/detail.html',
+                  {'order': order})

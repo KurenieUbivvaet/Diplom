@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали заказа</title>
+    <style>
+        /* Стили для тела письма */
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        table.cart {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table.cart th {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        table.cart td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        table.cart tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        /* Стили для кнопок */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            background-color: #337ab7;
+            color: #fff;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #23527c;
+        }
+
+
+        /* Стили для скидок */
+        .discount {
+            color: gray;
+            text-decoration: line-through;
+        }
+        .disc {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Здравствуйте {{ name }}</h1>
+    <h2>Детали заказа № {{ order_id }}</h2>
+    <table class="cart">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Цена, руб.</th>
+                <th>Количество</th>
+                <th>Сумма, руб.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+                <tr>
+                    <td>{{ item.product }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.total_price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if cart.coupon %}
+        <p>Скидка: {{ cart.coupon.discount }}%</p>
+        <p class="disc">Сумма без скидки: <a class="discount">{{ cart.get_total_price }} руб.</a></p>
+    {% endif %}
+    <p><h2>Итоговая сумма: {{ cart.get_total_price_after_discount }} руб.</h2></p>
+</body>
+</html>
