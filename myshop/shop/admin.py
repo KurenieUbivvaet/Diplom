@@ -1,8 +1,11 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from .models import Category, Product
+from .models import Category, Product, ProductSpecifications
 
+
+class ProductSpecInline(admin.TabularInline):
+    model = ProductSpecifications
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -16,6 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['available', 'created', 'updated']
     list_editable = ['price', 'stock', 'available']
     prepopulated_fields = {'slug': ('name',)}
+    inlines = [ProductSpecInline]
 
     def image_show(self, obj):
         if obj.image:

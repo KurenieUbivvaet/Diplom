@@ -1,10 +1,9 @@
 {% extends "shop/base.html" %}
 {% load static %}
 {% block subheader %}
-<div id="subheader_block">
-    <form class="form-inline my-2 my-lg-0" action="{% url 'shop:product_list' %}">
-        <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search" name="search">
-        <button class="btn btn-outline my-2 my-sm-0" type="submit">Поиск</button>
+    <form class="search-block" action="{% url 'shop:product_list' %}">
+        <input class="search-line" type="search" placeholder="Поиск" aria-label="Search" name="search">
+        <button class="search-btn" type="submit">Поиск</button>
     </form>
     <div class="cart">
     {% with total_items=cart|length %}
@@ -19,7 +18,6 @@
         {% endif %}
     {% endwith %}
     </div>
-</div>
 {% endblock %}
 {% block title %}
     {% if category %}{{ category.title }}{% else %}Products{% endif %}
@@ -36,5 +34,17 @@
             <input type="submit" value="Добавить в корзину">
         </form>
         {{ product.description|linebreaks }}
+        <div class="spec">
+            {% if product_spec %}
+            <h3>Характеристики</h3>
+            {% for ps in product_spec %}
+            <ul>
+                <li>
+                    <h5>{{ ps.title }}: {{ ps.description }}</h5>
+                </li>
+            </ul>
+            {% endfor %}
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

@@ -1,10 +1,10 @@
 {% extends "shop/base.html" %}
 {% load static %}
 {% block subheader %}
-<div id="subheader_block">
-    <form class="form-inline my-2 my-lg-0" action="{% url 'shop:product_list' %}">
-        <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search" name="search">
-        <button class="btn btn-outline my-2 my-sm-0" type="submit">Поиск</button>
+
+    <form class="search-block" action="{% url 'shop:product_list' %}">
+        <input class="search-line" type="search" placeholder="Поиск" aria-label="Search" name="search">
+        <button class="search-btn" type="submit">Поиск</button>
     </form>
     <div class="cart">
     {% with total_items=cart|length %}
@@ -19,24 +19,54 @@
         {% endif %}
     {% endwith %}
     </div>
-</div>
 {% endblock %}
 {% block title %}
     {% if category %}{{ category.name }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
+<div class="list-content">
     <div id="sidebar">
-        <h3>Категории</h3>
-        <ul>
-            <li {% if not category %}class="selected"{% endif %}>
-                <a href="{% url 'shop:product_list' %}">Все товары</a>
-            </li>
-            {% for c in categories %}
-                <li {% if category.slug == c.slug %}class="selected"{% endif %}>
-                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="sidebar-category">
+            <input type="submit" class="sub-category" onclick="toggleDropdown()" value="※ Категории ※">
+            <div id="categoryDropdown" class="dropdown-content">
+                <ul>
+                    <li {% if not category %}class="selected"{% endif %}>
+                        <a href="{% url 'shop:product_list' %}">Все товары</a>
+                    </li>
+                    {% for c in categories %}
+                        <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var dropdown = document.getElementById("categoryDropdown");
+                    var button = document.querySelector('.sub-category');
+                    dropdown.style.display = "none"; // Скрыть выпадающее меню по умолчанию
+
+                    // Показать или скрыть выпадающее меню при нажатии на кнопку
+                    button.addEventListener('click', function () {
+                        if (dropdown.style.display === "block") {
+                            dropdown.style.display = "none";
+                        } else {
+                            dropdown.style.display = "block";
+                        }
+                    });
+                });
+            </script>
+        </div>
+        <div class="sidebar-range">
+            <form class="filter-form" method="get">
+                <label for="min-price" class="filter-label">Минимальная цена:</label>
+                <input type="number" class="filter-input" id="min-price" name="min_price" value="{{ product_filter.data.min_price }}">
+                <label for="max-price" class="filter-label">Максимальная цена:</label>
+                <input type="number" class="filter-input" id="max-price" name="max_price" value="{{ product_filter.data.max_price }}">
+                <button type="submit" class="filter-submit">Применить</button>
+            </form>
+        </div>
     </div>
     <div id="main" class="product-list">
         <h1>{% if category %}{{ category.name }}{% else %}Товары{% endif %}</h1>
@@ -44,14 +74,17 @@
 
         {% for product in page_obj  %}
             <div class="item">
+                
                 <a href="{{ product.get_absolute_url }}">
                     <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
                 </a>
-                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
-                {{ product.price }} руб.
+                <div class="product-text">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+                    {{ product.price }} руб.
+                </div>
             </div>
         {% endfor %}
-
     </div>
+</div>
 
 {% endblock %}

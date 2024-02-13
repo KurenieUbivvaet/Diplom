@@ -39,7 +39,21 @@ class Product(models.Model):
         index_together = (('id','slug'),)
 
     def __str__(self):
-        return self.name
+        return 'Товары {}'.format(self.name)
 
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
+
+
+class ProductSpecifications(models.Model):
+    products = models.ForeignKey(Product, related_name='specification', on_delete=models.CASCADE, verbose_name='Товар')
+    title = models.CharField(max_length=150, db_index=True, verbose_name='Назваие')
+    description = models.CharField(blank=True, verbose_name='Описание')
+
+    class Meta:
+        ordering = ('title', )
+        verbose_name = 'Характеристика'
+        verbose_name_plural = 'Характеристики'
+
+    def __str__(self):
+        return '{}'.format(self.id)

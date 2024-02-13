@@ -4,7 +4,11 @@
     Your shopping cart
 {% endblock %}
 {% block content %}
-    <h1>Ваша корзина</h1>
+<div class="content-cart">
+    <div class="cart-name">
+        <h1>Ваша корзина</h1>
+    </div>
+    <div class="cart-table">
     <table class="cart">
         <thead>
         <tr>
@@ -45,7 +49,7 @@
                 </tr>
             {% endwith %}
         {% endfor %}
-
+                    
 
         {% if cart.coupon %}
         <tr class="subtotal">
@@ -74,13 +78,17 @@
 
         </tbody>
     </table>
-    <form action="{% url 'coupons:apply' %}" method="post">
-        {{ coupon_apply_form }}
-        <input type="submit" value="Применить">
-        {% csrf_token %}
-    </form>
-    <p class="text-right">
-        <a href="{% url 'shop:product_list' %}" class="button light">Вернуться к покупкам</a>
-        <a href="{% url 'orders:order_create' %}" class="button">Оформить заказ</a>
-    </p>
+    </div>
+    <div class="nav-btn">
+        <form action="{% url 'coupons:apply' %}" method="post">
+            {{ coupon_apply_form }}
+            <input type="submit" value="Применить">
+            {% csrf_token %}
+        </form>
+        <p class="text-right">
+            <a href="{% url 'shop:product_list' %}" class="button light">Вернуться к покупкам</a>
+            <a href="{% url 'orders:order_create' %}" class="button">Оформить заказ</a>
+        </p>
+    </div>
+</div>
 {% endblock %}
