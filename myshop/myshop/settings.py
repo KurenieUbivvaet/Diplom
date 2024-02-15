@@ -12,9 +12,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import json
 
 from django.urls import reverse_lazy
 
+
+json_file_path = r'C:\Users\user\Desktop\shop\myshop\config.json'
+
+with open(json_file_path, 'r') as json_file:
+    data = json.load(json_file)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
@@ -24,7 +30,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3lerv$*3@w@w&y*hmnp6d=)g5n@+tsk%#rcelw+%9k3m_qz!_l'
+SECRET_KEY = data['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,17 +94,7 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'shop',
-        'USER': 'postgres',
-        'PASSWORD': '89067344379Aa',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-
-    }
-}
+DATABASES = data["DATABASES"]
 
 
 # Password validation
@@ -156,8 +152,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-EMAIL_HOST_USER = 'smdmisha@yandex.ru'
-EMAIL_HOST_PASSWORD = 'tlxzisbuqubjyjjk'
+EMAIL_HOST_USER = data['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = data["EMAIL_HOST_PASSWORD"]
 
 EMAIL_SERVER = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

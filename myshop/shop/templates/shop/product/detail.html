@@ -23,6 +23,7 @@
     {% if category %}{{ category.title }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
+<div class="list-content">
     <div class="product-detail">
         <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt='img'>
         <h1>{{ product.name }}</h1>
@@ -47,4 +48,5 @@
             {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}
