@@ -10,7 +10,7 @@
     {% with total_items=cart|length %}
         {% if cart|length > 0 %}
             В корзине:
-            <a href="{% url 'cart:cart_detail' %}">
+            <a href="{% url 'cart:cart_detail' %}" class="button">
                 {{ total_items }} шт.,
                 {{ cart.get_total_price }} руб.
             </a>
@@ -61,9 +61,9 @@
         <div class="sidebar-range">
             <form class="filter-form" method="get">
                 <label for="min-price" class="filter-label">Минимальная цена:</label>
-                <input type="number" class="filter-input" id="min-price" name="min_price" value="{{ product_filter.data.min_price }}">
+                <input type="number" class="filter-input" id="min-price" name="min_price" value="{{ product_filter.data.min_price }}" placeholder="От {{ min_price_from_db }}&#8381;">
                 <label for="max-price" class="filter-label">Максимальная цена:</label>
-                <input type="number" class="filter-input" id="max-price" name="max_price" value="{{ product_filter.data.max_price }}">
+                <input type="number" class="filter-input" id="max-price" name="max_price" value="{{ product_filter.data.max_price }}" placeholder="До {{ max_price_from_db }}&#8381;">
                 <button type="submit" class="filter-submit">Применить</button>
             </form>
         </div>
@@ -81,6 +81,7 @@
                 <div class="product-text">
                     <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
                     {{ product.price }} руб.
+                    <p>Количество: {{ product.stock }}</p>
                 </div>
             </div>
         {% endfor %}

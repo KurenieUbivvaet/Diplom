@@ -3,6 +3,7 @@ from .models import Category, Product, ProductSpecifications
 from cart.forms import CartAddProductForm
 from django.core.paginator import Paginator
 from .filters import ProductFilter
+from django.db.models import Min, Max
 
 
 def product_list(request, category_slug=None):
@@ -26,6 +27,8 @@ def product_list(request, category_slug=None):
 
     product_filter = ProductFilter(request.GET, queryset=products)
     products = product_filter.qs
+    min_price_from_db = Product.objects.aggregate(Min('price'))['price__min']
+    max_price_from_db = Product.objects.aggregate(Max('price'))['price__max']
 
     # Разбиение на страницы
     paginator = Paginator(products, 15)
@@ -38,12 +41,16 @@ def product_list(request, category_slug=None):
         'products': products,
         'page_obj': page_obj,
         'product_filter': product_filter,
+        'min_price_from_db': min_price_from_db,
+        'max_price_from_db': max_price_from_db,
     })
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     product_spec = ProductSpecifications.objects.filter(products=product)
     cart_product_form = CartAddProductForm()
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:3]
     return render(request, 'shop/product/detail.html', {'product': product,
                                                         'product_spec': product_spec,
+                                                        'related_products': related_products,
                                                         'cart_product_form': cart_product_form})

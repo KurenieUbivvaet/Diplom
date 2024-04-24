@@ -22,6 +22,17 @@
         </ul>
         <p>Итого: {{ cart.get_total_price_after_discount|floatformat:"2" }}  руб.</p>
     </div>
+
+    <div id="map" style="width: 600px; height: 400px"></div>
+    <script>
+    ymaps.ready(function () {
+      var map = new ymaps.Map('map', {
+        center: [55.753215, 37.622504],
+        zoom: 10
+      });
+    });
+  </script>
+
     <form action="." method="post" class="order-form">
         {{ form.as_p }}
         <p><input type="submit" value="Подтвердить заказ"></p>

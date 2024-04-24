@@ -44,47 +44,57 @@ a.button.light {
 }
 
 table {
-    width:100%;
-    border-spacing:0;
-    border-collapse: collapse;
-}
-
-table th, table td {
-    text-align:left;
-    font-size:14px;
-    padding:10px;
-    margin:0;
-}
-
-tbody tr:nth-child(odd) {
-    background:#efefef;
-}
-
-tbody tr.subtotal {
-    background:#ccc;
-}
-
-thead th, tbody tr.total {
-    background:#5993bb;
-    color:#fff;
-    font-weight:bold;
-}
-
-table.cart {
-    margin-bottom:40px;
+  border-collapse: collapse;
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 table.cart img {
     width:180px;
+    border-radius: 10px;
 }
 
-tbody td.num {
-    text-align:right;
+th, td {
+  text-align: left;
+  padding: 8px;
 }
 
-td input[type="submit"] {
-    font-size:12px;
-    padding:4px 10px;
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.num {
+  text-align: right;
+}
+
+input[type="submit"] {
+  background-color: #A8B6A6;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+  background-color: #929c90;
 }
 
 form p label, form p input {
@@ -218,11 +228,11 @@ ul.errorlist {
 #content {
     overflow:hidden;
     padding:0 100px;
+    min-height:55vh;
 }
 
 .list-content {
     display: flex;
-
 }
 
 #sidebar {
@@ -276,7 +286,7 @@ ul.errorlist {
 }
 
 
-.product-list .item {
+.product-list .item{
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
@@ -332,6 +342,9 @@ ul.errorlist {
 
 .product-detail {
     text-align:justify;
+    width: 80%;
+    margin-top: 20px;
+
 }
 
 .product-detail .price {
@@ -341,9 +354,10 @@ ul.errorlist {
 }
 
 .product-detail img {
-    width:40%;
+    width: 30%;
     float:left;
     border-radius: 10px;
+    margin-right: 20px;
 }
 
 .product-detail h1 {
@@ -354,9 +368,64 @@ ul.errorlist {
     margin-top:10px;
 }
 
+.detail-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.related-products{
+    display: inline-block;
+    align-items: center;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.related-item{
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 300px;
+    height: 400px;
+    padding: 10px;
+    float: left;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.related-item:hover{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+}
+
+.related-item img{
+    width:100%;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.detail-list input[type="number"]{
+    padding: 8px;
+    background-color: #ffffff;
+    border: 1px solid #A8B6A6;
+    outline-color: #967259;
+    border-radius: 4px;
+}
+
+.detail-desc {
+    width: 80%;
+}
+
 .order-form {
     float:left;
 }
+
+
 
 .order-info {
     float:right;
@@ -492,14 +561,23 @@ select option:checked {
     flex-direction: column;
 }
 
+.content-cart input[type="number"], input[type="text"]{
+    padding: 8px;
+    background-color: #ffffff;
+    border: 1px solid #A8B6A6;
+    outline-color: #967259;
+    border-radius: 4px;
+}
+
 .nav-btn {
     overflow:auto;
     display: flex;
     align-items: center;
     justify-content:space-between;
+    margin-top: 20px;
 }
 
-/* футер */
+
 
 .footer{
     background:#967259;

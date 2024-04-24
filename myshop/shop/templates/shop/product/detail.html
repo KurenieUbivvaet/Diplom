@@ -9,7 +9,7 @@
     {% with total_items=cart|length %}
         {% if cart|length > 0 %}
             В корзине:
-            <a href="{% url 'cart:cart_detail' %}">
+            <a href="{% url 'cart:cart_detail' %}" class="button">
                 {{ total_items }} шт.,
                 {{ cart.get_total_price }} руб.
             </a>
@@ -24,28 +24,51 @@
 {% endblock %}
 {% block content %}
 <div class="list-content">
-    <div class="product-detail">
-        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt='img'>
-        <h1>{{ product.name }}</h1>
-        <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
-        <p class="price">{{ product.price }} руб.</p>
-        <form action="{% url 'cart:cart_add' product.id %}" method="post">
-            {{ cart_product_form }}
-            {% csrf_token %}
-            <input type="submit" value="Добавить в корзину">
-        </form>
-        {{ product.description|linebreaks }}
-        <div class="spec">
-            {% if product_spec %}
-            <h3>Характеристики</h3>
-            {% for ps in product_spec %}
-            <ul>
-                <li>
-                    <h5>{{ ps.title }}: {{ ps.description }}</h5>
-                </li>
-            </ul>
+    <div class="detail-list">
+        <div class="product-detail">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt='img'>
+            <h1>{{ product.name }}</h1>
+            <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+            <p class="price">{{ product.price }} руб.</p>
+            <p><h3>Количество: {{ product.stock }}</h3></p>
+            <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                {{ cart_product_form }}
+                {% csrf_token %}
+                <input type="submit" value="Добавить в корзину">
+            </form>
+        </div>
+        <div class="detail-desc">
+            <div class="discription">
+                {{ product.description|linebreaks }}
+            </div>
+            <div class="spec">
+                {% if product_spec %}
+                <h3>Характеристики</h3>
+                {% for ps in product_spec %}
+                <ul>
+                    <li>
+                        <h5>{{ ps.title }}: {{ ps.description }}</h5>
+                    </li>
+                </ul>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="related-products">
+            <h3>Похожие товары</h3>
+            {% for product in related_products %}
+            <div class="related-item">
+
+                <a href="{{ product.get_absolute_url }}">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+                </a>
+                <div class="product-text">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br>
+                    {{ product.price }} руб.
+                    <p>Количество: {{ product.stock }}</p>
+                </div>
+            </div>
             {% endfor %}
-            {% endif %}
         </div>
     </div>
 </div>
