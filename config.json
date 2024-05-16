@@ -1,0 +1,15 @@
+{
+    "SECRET_KEY": "django-insecure-3lerv$*3@w@w&y*hmnp6d=)g5n@+tsk%#rcelw+%9k3m_qz!_l",
+    "DATABASES": {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": "HostTest",
+            "USER": "postgres",
+            "PASSWORD": "1234",
+            "HOST": "127.0.0.1",
+            "PORT": "5432"
+        }
+    },
+    "EMAIL_HOST_USER": "smdmisha@yandex.ru",
+    "EMAIL_HOST_PASSWORD": "tlxzisbuqubjyjjk"
+}

@@ -17,7 +17,7 @@ import json
 from django.urls import reverse_lazy
 
 
-json_file_path = r'C:\Users\user\Desktop\shop\myshop\config.json'
+json_file_path = r'C:\Users\smdmi\OneDrive\Desktop\DiplomMAIN\Diplom\config.json'
 
 with open(json_file_path, 'r') as json_file:
     data = json.load(json_file)

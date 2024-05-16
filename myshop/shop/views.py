@@ -31,7 +31,7 @@ def product_list(request, category_slug=None):
     max_price_from_db = Product.objects.aggregate(Max('price'))['price__max']
 
     # Разбиение на страницы
-    paginator = Paginator(products, 15)
+    paginator = Paginator(products, 16)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

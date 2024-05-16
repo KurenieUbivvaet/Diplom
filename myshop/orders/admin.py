@@ -32,7 +32,7 @@ export_to_csv.short_description = 'Преобразовать в CSV'
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'surname', 'patronymic', 'email', 'address', 'postal_code', 'city', 'paid',
+    list_display = ['id', 'name', 'surname', 'patronymic', 'email', 'paid',
                     'created']
     list_filter = ['paid', 'created']
     inlines = [OrderItemInline]
